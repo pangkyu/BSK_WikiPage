@@ -47,38 +47,38 @@ const Pagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <div className="flex items-center justify-center w-60">
+    <div className="flex items-center justify-center w-[50%]">
       <img
         src={doublePrevArrow}
         alt="맨앞으로"
         onClick={() => handlePageClick(1)}
-        className="cursor-pointer"
+        className="cursor-pointer w-[5%]"
       />
       <img
         src={prevArrow}
         alt="한칸앞으로"
         onClick={handlePrevClick}
-        className="cursor-pointer"
+        className="cursor-pointer w-[5%]"
       />
-      <p className="w-7 text-center">페이지</p>
+      <p className="w-[20%] text-center">페이지</p>
       <input
         type="text"
         placeholder={String(currentPage)}
         onChange={(e) => handlePageChange(parseInt(e.target.value))}
-        className="w-3 h-1.5"
+        className="w-[4%] "
       />
       <p>/{totalPages}</p>
       <img
         src={nextArrow}
         alt="한칸뒤로"
         onClick={handleNextClick}
-        className="cursor-pointer"
+        className="cursor-pointer w-[5%]"
       />
       <img
         src={doubleNextArrow}
         alt="맨뒤로"
         onClick={() => handlePageClick(totalPages)}
-        className="cursor-pointer"
+        className="cursor-pointer w-[5%]"
       />
       <select
         value={itemsPerPage}

@@ -27,7 +27,7 @@ function App() {
   const fetchData = useCallback(async () => {
     try {
       const response = await axios.get(`http://localhost:3000/data/data.json`);
-      setJsonData(response.data);
+      setJsonData(response.data.reverse());
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -56,7 +56,7 @@ function App() {
               onPageChange={handlePageChange}
               onItemsPerPageChange={handleItemsPerPageChange}
             />
-            <div className="flex w-20 justify-center">
+            <div className="flex w-[20%] justify-center">
               <p>{`보기 ${startIndex + 1}-${endIndex}/${jsonData.length}`}</p>
             </div>
           </footer>
