@@ -2,11 +2,15 @@ import React from "react";
 
 interface ContentNavigationProps {
   cases: number;
+  addItem: () => void;
 }
 
-const ContentNavigation: React.FC<ContentNavigationProps> = ({ cases }) => {
+const ContentNavigation: React.FC<ContentNavigationProps> = ({
+  cases,
+  addItem,
+}) => {
   return (
-    <section className="flex w-[85vw] h-10 my-4 mx-auto">
+    <section className="flex w-[85vw] h-10 my-4 mx-auto" onClick={addItem}>
       <div className="flex justify-around items-center">
         <div className="flex bg-blue-100 text-blue-600 w-[20vw] h-[3vh] rounded-lg items-center justify-center ">
           현재 등록 : {cases}

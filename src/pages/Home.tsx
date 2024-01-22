@@ -24,9 +24,22 @@ const Home: React.FC = () => {
     setItemsPerPage(newItemsPerPage);
   };
 
+  const addItem = async () => {
+    console.log("add item");
+    try {
+      await axios.post(`http://localhost:3001/data`, {
+        id: 999,
+        title: "test",
+        content: "testtt",
+      });
+    } catch (error) {
+      console.error(`Error Post : `, error);
+    }
+  };
+
   const fetchData = useCallback(async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/data/data.json`);
+      const response = await axios.get(`http://localhost:3001/data`);
       setJsonData(response.data.reverse());
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -42,7 +55,10 @@ const Home: React.FC = () => {
       <section className="flex flex-col w-[90vw] h-[60vh]">
         <Header title="강의 목록" />
         <div className="flex flex-col w-full h-full bg-white overflow-y-auto">
-          <ContentNavigation cases={jsonData.length} />
+          <ContentNavigation
+            cases={jsonData.length}
+            addItem={() => addItem()}
+          />
           {currentData.map((item: lecture) => {
             return <ContentBox key={item.id} item={item} />;
           })}
