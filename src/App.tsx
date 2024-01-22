@@ -3,11 +3,27 @@ import axios from "axios";
 import Header from "./components/Header";
 import ContentNavigation from "./components/ContentNavigation";
 import ContentBox from "./components/ContentBox";
+import Pagination from "./components/Pagination";
 import { lecture } from "./interfaces/lecture";
 
 function App() {
   const [jsonData, setJsonData] = useState([]);
-  console.log(jsonData);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+
+  const totalPages = Math.ceil(jsonData.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = jsonData.slice(startIndex, endIndex);
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleItemsPerPageChange = (newItemsPerPage: number) => {
+    setItemsPerPage(newItemsPerPage);
+  };
+
   const fetchData = useCallback(async () => {
     try {
       const response = await axios.get(`http://localhost:3000/data/data.json`);
@@ -29,12 +45,12 @@ function App() {
           <div className="flex flex-col w-full h-full bg-white overflow-y-auto">
             <ContentNavigation cases={jsonData.length} />
             <ContentBox title="제목" />
-            {jsonData.map((item: lecture) => {
+            {currentData.map((item: lecture) => {
               return <ContentBox key={item.id} title={item.title} />;
             })}
           </div>
           <footer className="flex w-full h-10 bg-blue-500 justify-around items-center">
-            {/* <Pagination
+            <Pagination
               totalPages={totalPages}
               currentPage={currentPage}
               onPageChange={handlePageChange}
@@ -42,7 +58,7 @@ function App() {
             />
             <div className="flex w-20 justify-center">
               <p>{`보기 ${startIndex + 1}-${endIndex}/${jsonData.length}`}</p>
-            </div> */}
+            </div>
           </footer>
         </section>
       </body>
