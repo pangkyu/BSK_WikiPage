@@ -1,64 +1,33 @@
-import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
 import Header from "../components/Header";
-import ContentNavigation from "../components/ContentNavigation";
-import ContentBox from "../components/ContentBox";
-import Pagination from "../components/Pagination";
-import { lecture } from "../interfaces/lecture";
+import { useLocation } from "react-router-dom";
 
 const Detail: React.FC = () => {
-  const [jsonData, setJsonData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
-
-  const totalPages = Math.ceil(jsonData.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentData = jsonData.slice(startIndex, endIndex);
-
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-  };
-
-  const handleItemsPerPageChange = (newItemsPerPage: number) => {
-    setItemsPerPage(newItemsPerPage);
-  };
-
-  const fetchData = useCallback(async () => {
-    try {
-      const response = await axios.get(`http://localhost:3000/data/data.json`);
-      setJsonData(response.data.reverse());
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  const {
+    state: {
+      item: { id, title, content },
+    },
+  } = useLocation();
 
   return (
     <body className="flex flex-col w-screen h-screen justify-center items-center bg-gray-100">
       <section className="flex flex-col w-[90vw] h-[60vh]">
         <Header title="상세보기" />
         <div className="flex flex-col w-full h-full bg-white overflow-y-auto">
-          <ContentNavigation cases={jsonData.length} />
-          {/* <ContentBox title="제목" />
-          {currentData.map((item: lecture) => {
-            return <ContentBox key={item.id} title={item.title} />;
-          })} */}
-        </div>
-        <footer className="flex w-full h-10 bg-blue-500 justify-around items-center">
-          <Pagination
-            totalPages={totalPages}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-            onItemsPerPageChange={handleItemsPerPageChange}
-          />
-          <div className="flex w-[20%] justify-center">
-            <p>{`보기 ${startIndex + 1}-${endIndex}/${jsonData.length}`}</p>
+          <div className="flex w-[98%] h-[5vh] items-center justify-end">
+            <button className="flex border-gray-300 border cursor-pointer w-12 justify-center">
+              수정
+            </button>
+            <button className="flex  border-gray-300 border cursor-pointer w-12 justify-center">
+              삭제
+            </button>
           </div>
-        </footer>
+          <div className="flex border border-black rounded-[8px] w-[80vw] mx-auto my-[3vh]">
+            <p className="flex ml-2">{title}</p>
+          </div>
+          <div className="flex border border-black rounded-[8px] w-[80vw] h-[50%] mx-auto">
+            <p className="flex ml-2 mt-2">{content}</p>
+          </div>
+        </div>
       </section>
     </body>
   );

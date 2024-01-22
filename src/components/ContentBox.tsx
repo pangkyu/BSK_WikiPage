@@ -1,16 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { lecture } from "../interfaces/lecture";
 
 interface ContentBoxProps {
-  title: string;
-  id?: number;
+  item: lecture;
 }
 
-const ContentBox: React.FC<ContentBoxProps> = ({ title, id }) => {
+const ContentBox: React.FC<ContentBoxProps> = ({ item }) => {
   const navigate = useNavigate();
 
   const handleOnClick = () => {
-    navigate(`/detail/${id}`);
+    navigate(`/detail/${item.id}`, {
+      state: { item },
+    });
   };
   return (
     <section
@@ -21,7 +23,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({ title, id }) => {
         <input type="checkbox" />
       </div>
       <p className="flex w-8 justify-center">|</p>
-      <div>{title}</div>
+      <div>{item.title}</div>
     </section>
   );
 };

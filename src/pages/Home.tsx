@@ -36,6 +36,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
   return (
     <body className="flex flex-col w-screen h-screen justify-center items-center bg-gray-100">
       <section className="flex flex-col w-[90vw] h-[60vh]">
@@ -43,7 +44,7 @@ const Home: React.FC = () => {
         <div className="flex flex-col w-full h-full bg-white overflow-y-auto">
           <ContentNavigation cases={jsonData.length} />
           {currentData.map((item: lecture) => {
-            return <ContentBox key={item.id} title={item.title} id={item.id} />;
+            return <ContentBox key={item.id} item={item} />;
           })}
         </div>
         <footer className="flex w-full h-10 bg-blue-500 justify-around items-center">
