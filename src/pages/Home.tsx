@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/Header";
 import ContentNavigation from "../components/ContentNavigation";
@@ -10,6 +11,7 @@ const Home: React.FC = () => {
   const [jsonData, setJsonData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  const navigate = useNavigate();
 
   const totalPages = Math.ceil(jsonData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -25,16 +27,7 @@ const Home: React.FC = () => {
   };
 
   const addItem = async () => {
-    console.log("add item");
-    try {
-      await axios.post(`http://localhost:3001/data`, {
-        id: 999,
-        title: "test",
-        content: "testtt",
-      });
-    } catch (error) {
-      console.error(`Error Post : `, error);
-    }
+    navigate("/edit");
   };
 
   const fetchData = useCallback(async () => {

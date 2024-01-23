@@ -22,6 +22,21 @@ app.get("/data", (req, res) => {
   }
 });
 
+app.post("/data", (req, res) => {
+  const dataPath = path.join(__dirname, "public", "data", "data.json");
+  try {
+    const jsonData = fs.readFileSync(dataPath, "utf-8");
+    const newData = req.body;
+    const updatedData = [...JSON.parse(jsonData), newData];
+    fs.writeFileSync(dataPath, JSON.stringify(updatedData, null, 2));
+
+    res.json(updatedData);
+  } catch (error) {
+    console.error("Error updating data:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 app.listen(port, () => {
   console.log(`server is running ${port}`);
 });
