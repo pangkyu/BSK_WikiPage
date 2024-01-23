@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
@@ -11,11 +11,8 @@ const Modify: React.FC = () => {
       item: { id, title, content },
     },
   } = useLocation();
-  const inputTitle = useInput("");
-  const inputContent = useInput("");
-  console.log(id);
-  console.log(title);
-  console.log(content);
+  const inputTitle = useInput(title);
+  const inputContent = useInput(content);
 
   const handleCancel = () => {
     alert("글 수정이 취소되었습니다.");
@@ -34,7 +31,9 @@ const Modify: React.FC = () => {
       console.error(`Error Update : `, error);
       alert("글 수정이 실패했습니다.");
     } finally {
+      console.log("before");
       navigate("/");
+      console.log("after");
     }
   };
 

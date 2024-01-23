@@ -30,9 +30,6 @@ const Detail: React.FC = () => {
             >
               수정
             </button>
-            <button className="flex  border-gray-300 border cursor-pointer w-12 justify-center">
-              삭제
-            </button>
           </div>
           <div className="flex border border-black rounded-[8px] w-[80vw] mx-auto my-[3vh]">
             <p className="flex ml-2">{title}</p>

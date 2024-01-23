@@ -28,11 +28,11 @@ const Edit: React.FC = () => {
       });
 
       alert("글 등록이 완료되었습니다.");
-      navigate("/test");
     } catch (error) {
       console.error(`Error Post : `, error);
       alert("글 등록이 실패했습니다.");
     } finally {
+      navigate("/");
     }
   };
 
