@@ -11,12 +11,23 @@ const Home: React.FC = () => {
   const [jsonData, setJsonData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const navigate = useNavigate();
 
   const totalPages = Math.ceil(jsonData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentData = jsonData.slice(startIndex, endIndex);
+
+  const handleSelect = (itemId: number, checked: boolean) => {
+    if (checked) {
+      setSelectedItems((prevSelectedItems) => [...prevSelectedItems, itemId]);
+    } else {
+      setSelectedItems((prevSelectedItems) =>
+        prevSelectedItems.filter((id) => id !== itemId)
+      );
+    }
+  };
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -28,6 +39,17 @@ const Home: React.FC = () => {
 
   const addItem = async () => {
     navigate("/edit");
+  };
+
+  const deleteItem = async () => {
+    try {
+      await axios.delete(`http://localhost:3001/data`, {
+        data: { selectedItems },
+      });
+      setSelectedItems([]);
+    } catch (error) {
+      console.error(`Error Delete : ${error}`);
+    }
   };
 
   const fetchData = useCallback(async () => {
@@ -51,9 +73,17 @@ const Home: React.FC = () => {
           <ContentNavigation
             cases={jsonData.length}
             addItem={() => addItem()}
+            deleteItem={() => deleteItem()}
           />
           {currentData.map((item: lecture) => {
-            return <ContentBox key={item.id} item={item} />;
+            return (
+              <ContentBox
+                key={item.id}
+                item={item}
+                selected={selectedItems.includes(item.id)}
+                onSelect={(checked: boolean) => handleSelect(item.id, checked)}
+              />
+            );
           })}
         </div>
         <footer className="flex w-full h-10 bg-blue-500 justify-around items-center">
