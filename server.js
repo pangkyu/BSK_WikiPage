@@ -36,6 +36,23 @@ app.post("/data", (req, res) => {
   }
 });
 
+app.put("/data/:id", (req, res) => {
+  try {
+    const jsonData = fs.readFileSync(dataPath, "utf-8");
+    const idToUpdate = parseInt(req.params.id);
+    const updatedData = JSON.parse(jsonData).map((item) =>
+      item.id === idToUpdate
+        ? { ...item, title: req.body.title, content: req.body.content }
+        : item
+    );
+    fs.writeFileSync(dataPath, JSON.stringify(updatedData, null, 2));
+    res.json(updatedData);
+  } catch (error) {
+    console.error(`Error Update : ${error}`);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 app.delete("/data", (req, res) => {
   try {
     const jsonData = fs.readFileSync(dataPath, "utf-8");

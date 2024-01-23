@@ -1,12 +1,22 @@
 import Header from "../components/Header";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Detail: React.FC = () => {
+  const navigate = useNavigate();
+
   const {
     state: {
       item: { id, title, content },
     },
   } = useLocation();
+
+  const handleModify = () => {
+    navigate(`/modify/${id}`, {
+      state: {
+        item: { id, title, content },
+      },
+    });
+  };
 
   return (
     <body className="flex flex-col w-screen h-screen justify-center items-center bg-gray-100">
@@ -14,7 +24,10 @@ const Detail: React.FC = () => {
         <Header title="상세보기" />
         <div className="flex flex-col w-full h-full bg-white overflow-y-auto">
           <div className="flex w-[98%] h-[5vh] items-center justify-end">
-            <button className="flex border-gray-300 border cursor-pointer w-12 justify-center">
+            <button
+              className="flex border-gray-300 border cursor-pointer w-12 justify-center"
+              onClick={handleModify}
+            >
               수정
             </button>
             <button className="flex  border-gray-300 border cursor-pointer w-12 justify-center">
